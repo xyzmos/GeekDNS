@@ -20,13 +20,13 @@ Unbound负责解析、缓、转发查询、 DNS-OVER-TLS
 
 ## QS  
 ### 1、关于 Unbound 里面引入的配置文件：
-####- insecure.conf
+#### -  insecure.conf
   因为国内网络环境问题，当你验证某些域名的DNSSEC时会被干扰，无法验证，所以该部分域名需要排除DNSSEC验证。  
 
-####- forward.conf
+#### -  forward.conf
   用于解决域名污染问题，向海外上游转发信息。海外上游你可以自行指定，目前该文件里的上游为采用DOT方式**GEEKDNS**海外上游查询。  
 
-####- domestic.conf
+#### -  domestic.conf
   用于解决阿里高防DNS解析问题，以及解决部分服务比如bilibili，QQ，等服务的CDN调度问题。
   此配置文件采用DNS派提供的DNS（介意的请更换其他支持ECS的国内DNS）  
 
