@@ -1,10 +1,11 @@
 # GeekDNS
 官网：https://www.233py.com
 
+目的仅用于科研用途、保护隐私、最主要用于防止运营商DNS劫持～  
 主要采用Unbound + DOH Server + DNSDIST   
  - Unbound: https://nlnetlabs.nl/projects/unbound/about/  
  - DOH Serve:r https://github.com/m13253/dns-over-https  
- - DNSDIST:  https://dnsdist.org/
+ - DNSDIST:  https://dnsdist.org/  
 
 # 搭建教程
 https://www.4gml.com/forum-7.htm  
