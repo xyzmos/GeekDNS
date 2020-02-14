@@ -1,0 +1,18 @@
+#!/bin/bash
+echo Restart DNS Serve...
+echo "更新转发配置文件"
+curl -o /etc/unbound/forward.conf https://download.233py.com/dns/update/forward.conf
+curl -o /etc/unbound/domestic.conf https://download.233py.com/dns/update/domestic.conf
+curl -o /etc/unbound/insecure.conf https://download.233py.com/dns/update/insecure.conf
+echo "重启Unbound"
+killall unbound
+sleep 1
+unbound -v
+echo "重启DNSDIST"
+killall supervisord
+sleep 1
+supervisord -c /etc/supervisord.conf
+echo "重启DOH"
+systemctl restart doh-server.service
+echo "重启完成"
+exit 0;

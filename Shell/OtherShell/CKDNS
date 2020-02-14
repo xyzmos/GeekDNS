@@ -1,0 +1,9 @@
+#!/bin/bash
+PIDS=`ps -ef |grep unbound |grep -v grep | awk '{print $1}'`
+if [ "$PIDS" == "" ]; then
+ unbound -v
+fi
+SUP=`ps -ef |grep supervisord |grep -v grep | awk '{print $1}'`
+if [ "$SUP" == "" ]; then
+ supervisord -c /etc/supervisord.conf
+fi
