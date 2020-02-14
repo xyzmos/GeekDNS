@@ -69,11 +69,11 @@ rm -rf ../openssl*
 cd
 
 echo "安装DNSDIST"
-echo 'deb [arch=amd64] http://repo.powerdns.com/debian buster-dnsdist-master main' > /etc/apt/sources.list.d/pdns.list
+echo 'deb [arch=amd64] http://repo.powerdns.com/ubuntu bionic-dnsdist-14 main' > /etc/apt/sources.list.d/pdns.list
 echo 'Package: dnsdist*
 Pin: origin repo.powerdns.com
 Pin-Priority: 600' > /etc/apt/preferences.d/dnsdist
-curl https://repo.powerdns.com/CBC8B383-pub.asc | apt-key add - && apt-get update -y && apt-get install dnsdist -y
+curl https://repo.powerdns.com/FD380FBB-pub.asc | apt-key add - && apt-get update -y && apt-get install dnsdist -y
 mkdir /etc/dnsdist
 curl -o /etc/dnsdist/dnsdist.conf https://download.233py.com/dns/conf/dnsdist.conf
 echo "DNSDIST安装完成"
