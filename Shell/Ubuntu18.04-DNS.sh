@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "此脚本为GeekDNS Debian-10搭建脚本"
+echo "此脚本为GeekDNS Ubuntu-18.04搭建脚本"
 echo "搭建前请确认环境是干净的，将使用50，53，853，8053，9090端口"
 echo "https://www.4gml.com"
 
