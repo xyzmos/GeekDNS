@@ -30,7 +30,10 @@ wget https://raw.githubusercontent.com/xyzmos/GeekDNS/master/Shell/Centos8-DNS.s
 ``` bash
 wget https://raw.githubusercontent.com/xyzmos/GeekDNS/master/Shell/Debian10-DNS.sh && bash Debian10-DNS.sh 
 ```
-
+#### Ubuntu 18.04：
+``` bash
+wget https://raw.githubusercontent.com/xyzmos/GeekDNS/master/Shell/Ubuntu18.04-DNS.sh && bash Ubuntu18.04-DNS.sh 
+```
 
 
 
