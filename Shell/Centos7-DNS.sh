@@ -107,8 +107,8 @@ systemctl start doh-server.service
 systemctl enable doh-server.service
 
 echo "正在安装Unbound"
-wget https://download.233py.com/dns/soft/unbound-1.9.6.tar.gz
-tar -zxvf unbound-1.9.6.tar.gz && rm -rf unbound-1.9.6.tar.gz && cd unbound-1.9.6
+wget https://download.233py.com/dns/soft/unbound-1.10.0.tar.gz --no-check-certificate
+tar -zxvf unbound-1.10.0.tar.gz && rm -rf unbound-1.10.0.tar.gz && cd unbound-1.10.0
 ./configure --enable-subnet --with-libevent --with-pthreads --with-ssl --enable-dnscrypt
 make && sudo make install
 curl -o /usr/local/etc/unbound/root.hints ftp://ftp.internic.net/domain/named.cache
