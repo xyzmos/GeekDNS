@@ -1,0 +1,14 @@
+version: "3"
+services:
+    geekdns:
+        ports:
+            - "853:853"
+            - "443:2015"
+            - "80:8053"
+            - "53:53/udp"
+        image: zimonianhua/geekdns:1
+        environment:
+            - foreign=no
+        volumes:
+            - /ssl/cert.pem:/etc/geekdns/ssl/cert.pem
+            - /ssl/cert.key:/etc/geekdns/ssl/cert.key

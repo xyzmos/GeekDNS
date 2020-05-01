@@ -1,0 +1,14 @@
+#!/bin/bash
+PIDS=`ps -ef |grep unbound |grep -v grep | awk '{print $1}'`
+if [ "$PIDS" == "" ]; then
+    if [[ $foreign == no ]] then
+	    unbound -v -c /usr/local/etc/unbound/unbound-gn.conf
+    else
+        unbound -v -c /usr/local/etc/unbound/unbound-gw.conf
+    fi
+fi
+
+PID=`ps -ef |grep supervisord |grep -v grep | awk '{print $1}'`
+if [ "$PID" == "" ]; then
+   supervisord -c /etc/supervisord.conf
+fi

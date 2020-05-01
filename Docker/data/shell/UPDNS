@@ -1,0 +1,20 @@
+#!/bin/bash
+echo Restart DNS Serve...
+echo "更新转发配置文件"
+curl -o /etc/unbound/forward.conf https://download.233py.com/dns/update/forward.conf
+curl -o /etc/unbound/domestic.conf https://download.233py.com/dns/update/domestic.conf
+curl -o /etc/unbound/insecure.conf https://download.233py.com/dns/update/insecure.conf
+echo "重启Unbound"
+killall unbound
+sleep 1
+if [[ $foreign == no ]] 
+then
+	unbound -v -c /usr/local/etc/unbound/unbound-gn.conf
+else
+    unbound -v -c /usr/local/etc/unbound/unbound-gw.conf
+fi
+echo "重启其他服务"
+    killall supervisord
+    sleep 1
+    supervisord -c /etc/supervisord.conf
+echo "重启完成"
