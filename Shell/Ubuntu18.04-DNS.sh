@@ -1,9 +1,8 @@
 #!/bin/bash
 echo "此脚本为GeekDNS Ubuntu-18.04搭建脚本"
 echo "搭建前请确认环境是干净的，将使用50，53，853，8053，9090端口"
-echo "https://www.4gml.com"
 
-echo "下面开始搭建"
+echo "下面开始搭建,证书密钥地址请填写文件地址"
 echo "请输入SSL证书路径地址："
 read SSLCert
 if [[ -z $SSLCert ]]
@@ -145,14 +144,10 @@ curl -o /etc/supervisord.conf https://download.233py.com/dns/conf/supervisord.co
 UPDNS
 #防火墙
 echo "配置防火墙"
-firewall-cmd --permanent --zone=public --add-port=853/tcp
-firewall-cmd --permanent --zone=public --add-port=53/tcp
-firewall-cmd --permanent --zone=public --add-port=53/udp
-firewall-cmd --permanent --zone=public --add-port=443/tcp
-firewall-cmd --permanent --zone=public --add-port=80/tcp
-firewall-cmd --permanent --zone=public --add-port=9090/udp
-firewall-cmd --permanent --zone=public --add-port=9090/tcp
-firewall-cmd --reload
+ufw allow 8053
+ufw allow 50
+ufw allow 53
+ufw allow 9090
 ufw allow 853
 setenforce 0
 echo "/usr/sbin/setenforce 0" >> /etc/rc.local

@@ -145,14 +145,10 @@ curl -o /etc/supervisord.conf https://download.233py.com/dns/conf/supervisord.co
 UPDNS
 #防火墙
 echo "配置防火墙"
-firewall-cmd --permanent --zone=public --add-port=853/tcp
-firewall-cmd --permanent --zone=public --add-port=53/tcp
-firewall-cmd --permanent --zone=public --add-port=53/udp
-firewall-cmd --permanent --zone=public --add-port=443/tcp
-firewall-cmd --permanent --zone=public --add-port=80/tcp
-firewall-cmd --permanent --zone=public --add-port=9090/udp
-firewall-cmd --permanent --zone=public --add-port=9090/tcp
-firewall-cmd --reload
+ufw allow 8053
+ufw allow 50
+ufw allow 53
+ufw allow 9090
 ufw allow 853
 setenforce 0
 echo "/usr/sbin/setenforce 0" >> /etc/rc.local

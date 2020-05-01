@@ -1,33 +1,28 @@
 #!/bin/bash
 echo "此脚本为GeekDNS Centos7搭建脚本"
 echo "搭建前请确认环境是干净的，将使用50，853，8053，9090端口"
-echo "https://www.4gml.com"
 
-echo "下面开始搭建"
-echo "请输入SSL证书路径地址："
+echo "下面开始搭建,证书密钥地址请填写文件地址"
+echo "请输入SSL证书地址："
 read SSLCert
-if [[ -z $SSLCert ]]
-	then
+if [[ -z $SSLCert ]]; then
 	SSLCert=123
 fi
-echo "请输入SSL密钥路径地址："
+echo "请输入SSL密钥地址："
 read SSLKey
-if [[ -z $SSLKey ]]
-	then
+if [[ -z $SSLKey ]]; then
 	SSLKey=123
 fi
 
 echo "是否具有IPV6网络（Y/N）："
 read IPV6
-if [[ -z $IPV6 ]]
-	then
+if [[ -z $IPV6 ]]; then
 	IPV6=N
 fi
 
 echo "是否为国外服务器（Y/N）："
 read Other
-if [[ -z $Other ]]
-	then
+if [[ -z $Other ]]; then
 	Other=N
 fi
 
@@ -61,7 +56,7 @@ cd /root
 wget -N --no-check-certificate https://download.233py.com/dns/soft/libsodium-1.0.18.tar.gz
 tar xf libsodium-1.0.18.tar.gz && cd libsodium-1.0.18
 ./configure && make -j2 && make install
-echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
+echo /usr/local/lib >/etc/ld.so.conf.d/usr_local_lib.conf
 ldconfig
 rm -rf ../libsodium-1.0.18*
 
@@ -91,7 +86,7 @@ tar -C /usr/local -xzf go1.13.7.linux-amd64.tar.gz && rm -rf go1.13.7.linux-amd6
 mkdir -p /root/go
 echo 'export GOROOT=/usr/local/go
 export PATH=$PATH:$GOROOT/bin
-export GOPATH=/root/go' >> /etc/profile
+export GOPATH=/root/go' >>/etc/profile
 source /etc/profile
 go env -w GO111MODULE=on
 go env -w GOPROXY=https://goproxy.cn,direct
@@ -108,27 +103,24 @@ systemctl enable doh-server.service
 
 echo "正在安装Unbound"
 wget https://download.233py.com/dns/soft/unbound-1.10.0.tar.gz --no-check-certificate
-tar -zxvf unbound-1.10.0.tar.gz && rm -rf unbound-1.10.0.tar.gz && cd unbound-1.10.0
-./configure --enable-subnet --with-libevent --with-pthreads --with-ssl --enable-dnscrypt
+tar -zxvf unbound-1.10.0.tar.gz && rm -rf unbound-1.10.0.tar.gz && cd unbound-1.10.0 && ./configure --enable-subnet --with-libevent --with-pthreads --with-ssl --enable-dnscrypt
 make && sudo make install
 curl -o /usr/local/etc/unbound/root.hints ftp://ftp.internic.net/domain/named.cache
 /sbin/ldconfig -v
 unbound-anchor
 # 下载新的配置文件
 curl -o /usr/local/etc/unbound/unbound.conf https://download.233py.com/dns/conf/unbound.conf
-if [[ $Other == Y ]]
-then
+if [[ $Other == Y ]]; then
 	curl -o /usr/local/etc/unbound/unbound.conf https://download.233py.com/dns/conf/unbounds.conf
 fi
-# 是否开启IPV6 
-if [[ $IPV6 == Y ]]
-then
+# 是否开启IPV6
+if [[ $IPV6 == Y ]]; then
 	sed -i "s/do-ip6: no/do-ip6: yes/g" /usr/local/etc/unbound/unbound.conf
 fi
 
 # 更新证书路径 和 线程数
 #CPU 核心数储存
-CPU_NUM=`cat /proc/cpuinfo |grep "processor"|wc -l`
+CPU_NUM=$(cat /proc/cpuinfo | grep "processor" | wc -l)
 sed -i "s/CPUNUM/$CPU_NUM/g" /usr/local/etc/unbound/unbound.conf
 sed -i "s:TLSKEY:$SSLKey:g" /usr/local/etc/unbound/unbound.conf
 sed -i "s:TLSCERT:$SSLCert:g" /usr/local/etc/unbound/unbound.conf
@@ -159,11 +151,10 @@ firewall-cmd --permanent --zone=public --add-port=9090/udp
 firewall-cmd --permanent --zone=public --add-port=9090/tcp
 firewall-cmd --reload
 setenforce 0
-echo "/usr/sbin/setenforce 0" >> /etc/rc.local
-echo "0 0 * * * UPDNS">>/var/spool/cron/root
-echo "* * * * * CKDNS">>/var/spool/cron/root
-systemctl restart crond.service >/dev/null 2>&1   
+echo "/usr/sbin/setenforce 0" >>/etc/rc.local
+echo "0 0 * * * UPDNS" >>/var/spool/cron/root
+echo "* * * * * CKDNS" >>/var/spool/cron/root
+systemctl restart crond.service >/dev/null 2>&1
 systemctl enable crond.service >/dev/null 2>&1
 
-echo "安装完成，请参考https://www.4gml.com配置Nginx"
-
+echo "安装完成，请参考Github配置Nginx"
