@@ -11,6 +11,38 @@
 # 搭建教程
 https://www.4gml.com/forum-7.htm  
 
+### Docker 端口说明：
+    853 DNS-OVER-TLS
+    8053 DNS-OVER-HTTP
+    2015 DNS-OVER-HTTPS
+    53 普通DNS端口
+
+### docker-compose部署
+修改下面/ssl/cert.pem和/ssl/cert.key 为你的证书地址和密钥地址，国外服务器请修改foreign=no为foreign=yes
+``` yml
+version: "3"
+services:
+    geekdns:
+        ports:
+            - "853:853"
+            - "443:2015"
+            - "80:8053"
+            - "53:53/udp"
+        image: zimonianhua/geekdns:1
+        environment:
+            - foreign=no
+        volumes:
+            - /ssl/cert.pem:/etc/geekdns/ssl/cert.pem
+            - /ssl/cert.key:/etc/geekdns/ssl/cert.key
+```
+修改完成启动容器
+```
+sudo docker-compose up -d
+```
+# Docker
+Image: https://hub.docker.com/r/zimonianhua/geekdns
+
+
 ## 搭建脚本
 此脚本自动配置安装Unbound， DOH Server，Dnsdist，安装完成后将存在以下服务
 - TCP 853：DNS Over TLS  
@@ -96,4 +128,4 @@ DNS派： http://www.dnspai.com/public.html
 
 
 这里是GeekDNS配置文件
-更新时间2020/2/14
+更新时间2020/5/1
